@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="base_url_flags">https://raw.githubusercontent.com/hampusborgos/country-flags/main/png1000px/</string>
+    <string name="base_url_retrofit">https://connect.mindbodyonline.com/</string>
+</resources>

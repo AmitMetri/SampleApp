@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    android:label="Country List"
+    app:startDestination="@id/itemListFragment">
+
+    <fragment
+        android:id="@+id/itemListFragment"
+        android:name="metri.amit.sampleapp.view.ItemListFragment"
+        android:label="Country List"
+        tools:layout="@layout/item_list_fragment" />
+    <fragment
+        android:id="@+id/itemDetailsFragment"
+        android:name="metri.amit.sampleapp.view.ItemDetailsFragment"
+        android:label="Country Details"
+        tools:layout="@layout/fragment_item_details" />
+</navigation>
