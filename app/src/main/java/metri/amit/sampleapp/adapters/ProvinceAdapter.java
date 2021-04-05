@@ -5,10 +5,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,9 +21,9 @@ import metri.amit.sampleapp.model.Province;
 public class ProvinceAdapter extends RecyclerView.Adapter<ProvinceAdapter.ViewHolder> {
 
     private static final String TAG = "ProvinceAdapter";
-    private List<Province> provinceList;
-    private int spanCount;
-    private Activity activity;
+    private final List<Province> provinceList;
+    private final int spanCount;
+    private final Activity activity;
 
     public ProvinceAdapter(List<Province> provinceList, int spanCount, FragmentActivity activity) {
         this.provinceList = provinceList;

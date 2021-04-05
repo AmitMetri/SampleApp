@@ -27,7 +27,7 @@ public class CountryRepoTest {
      * Instrumentation tests need application context
      * */
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         // Context of the app under test.
         appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
@@ -66,7 +66,7 @@ public class CountryRepoTest {
 
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         appContext = null;
     }
 }

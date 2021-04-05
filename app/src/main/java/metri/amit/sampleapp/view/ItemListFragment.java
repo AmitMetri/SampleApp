@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.FragmentNavigator;
 import androidx.navigation.fragment.NavHostFragment;
@@ -23,7 +22,6 @@ import metri.amit.sampleapp.R;
 import metri.amit.sampleapp.adapters.CountriesAdapter;
 import metri.amit.sampleapp.databinding.ItemListFragmentBinding;
 import metri.amit.sampleapp.model.Country;
-import metri.amit.sampleapp.model.ErrorData;
 import metri.amit.sampleapp.viewmodel.ItemListViewModel;
 
 public class ItemListFragment extends Fragment {
@@ -90,29 +88,26 @@ public class ItemListFragment extends Fragment {
          * any other exceptions.
          * */
         mBinding.retryButton.setVisibility(View.INVISIBLE);
-        mViewModel.getErrorDataMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ErrorData>() {
-            @Override
-            public void onChanged(ErrorData errorData) {
-                /*
-                 * Make retry button visible in case of error
-                 * and make progress invisible in case of error.
-                 * */
-                mBinding.retryButton.setVisibility(View.VISIBLE);
-                mBinding.progressCircular.setVisibility(View.INVISIBLE);
-                mBinding.searchView.setVisibility(View.INVISIBLE);
-                mBinding.communicationText.setText(errorData.getErrorMessage());
-                /*
-                 * Retry button click will initiate network call again
-                 * to get the countries list
-                 * */
-                mBinding.retryButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mBinding.retryButton.setVisibility(View.INVISIBLE);
-                        subscribeForCountryList();
-                    }
-                });
-            }
+        mViewModel.getErrorDataMutableLiveData().observe(getViewLifecycleOwner(), errorData -> {
+            /*
+             * Make retry button visible in case of error
+             * and make progress invisible in case of error.
+             * */
+            mBinding.retryButton.setVisibility(View.VISIBLE);
+            mBinding.progressCircular.setVisibility(View.INVISIBLE);
+            mBinding.searchView.setVisibility(View.INVISIBLE);
+            mBinding.communicationText.setText(errorData.getErrorMessage());
+            /*
+             * Retry button click will initiate network call again
+             * to get the countries list
+             * */
+            mBinding.retryButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBinding.retryButton.setVisibility(View.INVISIBLE);
+                    subscribeForCountryList();
+                }
+            });
         });
     }
 
@@ -125,12 +120,9 @@ public class ItemListFragment extends Fragment {
         mBinding.searchView.setVisibility(View.VISIBLE);
         mBinding.progressCircular.setVisibility(View.VISIBLE);
         mBinding.communicationText.setText("");
-        mViewModel.getCountryList().observe(getViewLifecycleOwner(), new Observer<List<Country>>() {
-            @Override
-            public void onChanged(List<Country> countries) {
-                mBinding.progressCircular.setVisibility(View.INVISIBLE);
-                countriesAdapter.updateList(countries);
-            }
+        mViewModel.getCountryList().observe(getViewLifecycleOwner(), countries -> {
+            mBinding.progressCircular.setVisibility(View.INVISIBLE);
+            countriesAdapter.updateList(countries);
         });
     }
 
@@ -153,20 +145,10 @@ public class ItemListFragment extends Fragment {
          * Use the orientation to set the GridlayoutManager span items count.
          * */
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            countriesAdapter = new CountriesAdapter(countries, 1, getActivity(), new CountriesAdapter.CountrySelection() {
-                @Override
-                public void onCountrySelected(Country country, View itemView, int position) {
-                    navigateToDetails(country, itemView, position);
-                }
-            });
+            countriesAdapter = new CountriesAdapter(countries, 1, getActivity(), (country, itemView, position) -> navigateToDetails(country, itemView, position));
             gridLayoutManager = new GridLayoutManager(getActivity(), 1);
         } else {
-            countriesAdapter = new CountriesAdapter(countries, 2, getActivity(), new CountriesAdapter.CountrySelection() {
-                @Override
-                public void onCountrySelected(Country country, View itemView, int position) {
-                    navigateToDetails(country, itemView, position);
-                }
-            });
+            countriesAdapter = new CountriesAdapter(countries, 2, getActivity(), (country, itemView, position) -> navigateToDetails(country, itemView, position));
             gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         }
         mBinding.recyclerView.setLayoutManager(gridLayoutManager);

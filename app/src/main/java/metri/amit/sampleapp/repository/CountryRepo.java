@@ -25,23 +25,23 @@ import metri.amit.sampleapp.model.Province;
 public class CountryRepo {
 
     private static CountryRepo instance;
-    private static String TAG = "CountryRepo";
+    private static final String TAG = "CountryRepo";
     /*
      * Country list mutable live data
      * is being observed by the ItemListFragment
      * to show the list of countries
      * */
-    MutableLiveData<List<Country>> countries = new MutableLiveData<>();
+    final MutableLiveData<List<Country>> countries = new MutableLiveData<>();
     /*
      * error mutable live data is being observed by the ItemListFragment
      * to update the UI in case of failure.
      * */
-    SingleMutableLiveData<ErrorData> errorDataForItemListFragment = new SingleMutableLiveData<>();
+    final SingleMutableLiveData<ErrorData> errorDataForItemListFragment = new SingleMutableLiveData<>();
     /*
      * error mutable live data is being observed by the ItemDetailsFragment
      * to update the UI in case of failure.
      * */
-    SingleMutableLiveData<ErrorData> errorDataForItemDetailsFragment = new SingleMutableLiveData<>();
+    final SingleMutableLiveData<ErrorData> errorDataForItemDetailsFragment = new SingleMutableLiveData<>();
 
     /*
      * Singleton method to provide the instance of the repository

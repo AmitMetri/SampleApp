@@ -5,9 +5,7 @@ import java.util.List;
 import io.reactivex.Single;
 import metri.amit.sampleapp.model.Country;
 import metri.amit.sampleapp.model.Province;
-import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**

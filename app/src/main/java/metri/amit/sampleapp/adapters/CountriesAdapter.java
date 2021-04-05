@@ -30,11 +30,11 @@ import metri.amit.sampleapp.model.Country;
 public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.ViewHolder> implements Filterable {
 
     private static final String TAG = "CountriesAdapter";
-    private List<Country> countries;
+    private final List<Country> countries;
     private List<Country> countriesFiltered;
-    private CountrySelection countrySelection;
-    private int spanCount;
-    private Activity activity;
+    private final CountrySelection countrySelection;
+    private final int spanCount;
+    private final Activity activity;
 
     /*
     * Initialize the properties while setting the adapter
@@ -86,12 +86,7 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.View
                 .centerCrop()
                 .placeholder(android.R.drawable.gallery_thumb)
                 .into(holder.binding.countryFlag);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                countrySelection.onCountrySelected(country, holder.itemView, position);
-            }
-        });
+        holder.itemView.setOnClickListener(v -> countrySelection.onCountrySelected(country, holder.itemView, position));
 
         /*
         * Set unique transition names for transition animation
@@ -141,7 +136,7 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.View
     }
 
     public interface CountrySelection {
-        public void onCountrySelected(Country country, View itemView, int position);
+        void onCountrySelected(Country country, View itemView, int position);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

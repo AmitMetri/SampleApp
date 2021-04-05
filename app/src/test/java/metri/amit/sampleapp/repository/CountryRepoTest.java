@@ -1,15 +1,8 @@
 package metri.amit.sampleapp.repository;
 
-import android.content.Context;
-
 import org.junit.Test;
 
-import java.util.List;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import metri.amit.sampleapp.SingleMutableLiveData;
-import metri.amit.sampleapp.model.Country;
 import metri.amit.sampleapp.model.ErrorData;
 
 import static com.google.common.truth.Truth.assertThat;

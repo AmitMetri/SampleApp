@@ -19,7 +19,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -28,7 +27,6 @@ import metri.amit.sampleapp.R;
 import metri.amit.sampleapp.adapters.ProvinceAdapter;
 import metri.amit.sampleapp.databinding.FragmentItemDetailsBinding;
 import metri.amit.sampleapp.model.Country;
-import metri.amit.sampleapp.model.ErrorData;
 import metri.amit.sampleapp.model.Province;
 import metri.amit.sampleapp.viewmodel.ItemDetailsViewModel;
 
@@ -131,28 +129,22 @@ public class ItemDetailsFragment extends Fragment {
              * any other exceptions.
              * */
             mBinding.retryButton.setVisibility(View.INVISIBLE);
-            mViewModel.getErrorDataMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ErrorData>() {
-                @Override
-                public void onChanged(ErrorData errorData) {
-                    /*
-                     * Make retry button visible in case of error
-                     * and make progress invisible in case of error.
-                     * */
-                    mBinding.retryButton.setVisibility(View.VISIBLE);
-                    mBinding.progressCircular.setVisibility(View.INVISIBLE);
-                    mBinding.communicationText.setText(errorData.getErrorMessage());
-                    /*
-                     * Retry button click will initiate network call again
-                     * to get the province list
-                     * */
-                    mBinding.retryButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mBinding.retryButton.setVisibility(View.INVISIBLE);
-                            subscribeForProvinceList();
-                        }
-                    });
-                }
+            mViewModel.getErrorDataMutableLiveData().observe(getViewLifecycleOwner(), errorData -> {
+                /*
+                 * Make retry button visible in case of error
+                 * and make progress invisible in case of error.
+                 * */
+                mBinding.retryButton.setVisibility(View.VISIBLE);
+                mBinding.progressCircular.setVisibility(View.INVISIBLE);
+                mBinding.communicationText.setText(errorData.getErrorMessage());
+                /*
+                 * Retry button click will initiate network call again
+                 * to get the province list
+                 * */
+                mBinding.retryButton.setOnClickListener((View.OnClickListener) v -> {
+                    mBinding.retryButton.setVisibility(View.INVISIBLE);
+                    subscribeForProvinceList();
+                });
             });
         }
     }
@@ -166,12 +158,9 @@ public class ItemDetailsFragment extends Fragment {
     private void subscribeForProvinceList() {
         mBinding.progressCircular.setVisibility(View.VISIBLE);
         mBinding.communicationText.setText("");
-        mViewModel.getProvinceList(country.getId().toString()).observe(getViewLifecycleOwner(), new Observer<List<Province>>() {
-            @Override
-            public void onChanged(List<Province> provinceList) {
-                mBinding.progressCircular.setVisibility(View.INVISIBLE);
-                provinceAdapter.updateList(provinceList);
-            }
+        mViewModel.getProvinceList(country.getId().toString()).observe(getViewLifecycleOwner(), provinceList -> {
+            mBinding.progressCircular.setVisibility(View.INVISIBLE);
+            provinceAdapter.updateList(provinceList);
         });
     }
 

@@ -36,6 +36,7 @@ import static org.hamcrest.Matchers.is;
 * Then waits till province list is available in the second screen
 * Validated the country name for the clicked position.
 * */
+@SuppressWarnings("deprecation")
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class CountryDetailsTest1 {
