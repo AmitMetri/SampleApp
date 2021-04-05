@@ -11,6 +11,10 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+/*
+* This class helps to subscribe live only once.
+* Multiple subscriptions are ignored
+* */
 public class SingleMutableLiveData<T> extends MutableLiveData<T> {
 
     private static final String TAG = "SingleMutableLiveData";

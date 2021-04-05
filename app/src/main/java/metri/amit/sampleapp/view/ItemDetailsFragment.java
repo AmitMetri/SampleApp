@@ -30,11 +30,15 @@ import metri.amit.sampleapp.model.Country;
 import metri.amit.sampleapp.model.Province;
 import metri.amit.sampleapp.viewmodel.ItemDetailsViewModel;
 
-/**
- * Item Details fragment
- */
+/*
+ * ItemDetailsFragment lists the provinces and shows selected country details.
+ * MVVM architecture is used along with LiveData support.
+ * Province list and Error data are observed in this fragment.
+ * Error cases are handled.
+ * Network failures are also handled.
+ * Network connection check is placed.
+ * */
 public class ItemDetailsFragment extends Fragment {
-
 
     private ItemDetailsViewModel mViewModel;
     private FragmentItemDetailsBinding mBinding;
@@ -128,7 +132,9 @@ public class ItemDetailsFragment extends Fragment {
              * network failures, timeouts, data validation failures or
              * any other exceptions.
              * */
-            mBinding.retryButton.setVisibility(View.INVISIBLE);
+            if (mBinding.retryButton != null) {
+                mBinding.retryButton.setVisibility(View.INVISIBLE);
+            }
             mViewModel.getErrorDataMutableLiveData().observe(getViewLifecycleOwner(), errorData -> {
                 /*
                  * Make retry button visible in case of error
@@ -136,7 +142,9 @@ public class ItemDetailsFragment extends Fragment {
                  * */
                 mBinding.retryButton.setVisibility(View.VISIBLE);
                 mBinding.progressCircular.setVisibility(View.INVISIBLE);
-                mBinding.communicationText.setText(errorData.getErrorMessage());
+                if (mBinding.communicationText != null) {
+                    mBinding.communicationText.setText(errorData.getErrorMessage());
+                }
                 /*
                  * Retry button click will initiate network call again
                  * to get the province list

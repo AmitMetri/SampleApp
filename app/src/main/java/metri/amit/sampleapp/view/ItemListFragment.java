@@ -24,6 +24,14 @@ import metri.amit.sampleapp.databinding.ItemListFragmentBinding;
 import metri.amit.sampleapp.model.Country;
 import metri.amit.sampleapp.viewmodel.ItemListViewModel;
 
+/*
+* ItemListFragment lists the countries.
+* MVVM architecture is used along with LiveData support.
+* Counties list and Error data are observed in this fragment.
+* Error cases are handled.
+* Network failures are also handled.
+* Network connection check is placed.
+* */
 public class ItemListFragment extends Fragment {
 
     private final List<Country> countries = new ArrayList<>();

@@ -10,7 +10,13 @@ import metri.amit.sampleapp.R;
 
 import android.os.Bundle;
 
-
+/*
+* MainActivity hosts JetPack's navigation component.
+* This app is designed for one activity and multiple fragments.
+* ItemListFragment is the default fragment to be launched in MainActivity.
+* ItemListFragment lists the countries.
+* ItemDetailsFragment is navigated if any country is selected from this list.
+* */
 public class MainActivity extends AppCompatActivity {
 
     @Override

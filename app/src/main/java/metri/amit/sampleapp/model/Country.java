@@ -6,6 +6,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+/*
+* Model class for Country List
+* Improvement can be done here with Parcelable implementation
+* */
 public class Country implements Serializable {
 
     @SerializedName("ID")

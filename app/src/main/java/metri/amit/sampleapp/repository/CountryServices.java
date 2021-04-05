@@ -10,6 +10,7 @@ import retrofit2.http.Path;
 
 /**
  * Created by amitmetri on 04,April,2021
+ * Service class for retrofit
  */
 interface CountryServices {
 

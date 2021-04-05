@@ -15,6 +15,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by amitmetri on 04,April,2021
+ * Helper class to obtain the retrofit object.
+ * For debug builds logger is placed.
+ * Retrofit object has RxJava as adapter factory.
+ * Below improvements are pending to be implemented
+ * ssl pinning, protection from ssl pinning bypassing (Ex: frida framework)
  */
 public class ApiClient {
 

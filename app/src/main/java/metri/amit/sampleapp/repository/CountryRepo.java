@@ -21,6 +21,7 @@ import metri.amit.sampleapp.model.Province;
 
 /**
  * Created by amitmetri on 04,April,2021
+ * Single repository for the data source.
  */
 public class CountryRepo {
 

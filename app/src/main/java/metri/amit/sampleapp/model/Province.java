@@ -4,6 +4,10 @@ package metri.amit.sampleapp.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/*
+* Model class for Province list
+* Improvement can be done here with Parcelable implementation
+* */
 public class Province {
 
     @SerializedName("ID")
