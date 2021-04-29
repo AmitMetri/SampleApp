@@ -12,12 +12,10 @@ import retrofit2.http.Path
  * Service class for retrofit
  */
 internal interface CountryServices {
-    /*@get:GET("rest/worldregions/country")
-    val countriesList: Single<List<Country?>?>?*/
 
     @GET("rest/worldregions/country")
-    fun getCountryList():  Observable<List<Country?>?>
+    fun getCountryList():  Observable<List<Country>>
 
     @GET("rest/worldregions/country/{ID}/province")
-    fun getProvinceList(@Path("ID") countryId: String?): Observable<List<Province?>?>
+    fun getProvinceList(@Path("ID") countryId: String?): Observable<List<Province>>
 }

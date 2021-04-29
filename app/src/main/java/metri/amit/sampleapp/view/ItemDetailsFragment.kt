@@ -24,6 +24,8 @@ import metri.amit.sampleapp.model.Country
 import metri.amit.sampleapp.model.ErrorData
 import metri.amit.sampleapp.model.Province
 import metri.amit.sampleapp.viewmodel.ItemDetailsViewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by amitmetri on 28,April,2021
@@ -38,7 +40,7 @@ import metri.amit.sampleapp.viewmodel.ItemDetailsViewModel
 class ItemDetailsFragment : Fragment() {
 
     private var mViewModel: ItemDetailsViewModel? = null
-    private val provinceList: List<Province> = ArrayList()
+    private val provinceList: MutableList<Province> = mutableListOf()
     private var provinceAdapter: ProvinceAdapter? = null
     private var mBinding: FragmentItemDetailsBinding? = null
     private var position: Int? = null
@@ -84,9 +86,11 @@ class ItemDetailsFragment : Fragment() {
 
         /*
          * Set the UI elements here
-         * */if (country != null) {
+         * */
+        if (country != null) {
             Glide.with(this)
-                    .load(getString(R.string.base_url_flags) + country!!.Code?.toLowerCase() + ".png")
+                    .load(getString(R.string.base_url_flags)
+                            + country!!.Code?.toLowerCase(Locale.getDefault()) + ".png")
                     .centerCrop()
                     .placeholder(android.R.drawable.gallery_thumb)
                     .listener(object : RequestListener<Drawable?> {
@@ -119,20 +123,22 @@ class ItemDetailsFragment : Fragment() {
             }
             mViewModel!!.errorDataMutableLiveData.observe(viewLifecycleOwner, Observer { errorData: ErrorData ->
                 /*
-                     * Make retry button visible in case of error
-                     * and make progress invisible in case of error.
-                     * */mBinding!!.retryButton!!.visibility = View.VISIBLE
+                 * Make retry button visible in case of error
+                 * and make progress invisible in case of error.
+                 * */
+                mBinding!!.retryButton!!.visibility = View.VISIBLE
                 mBinding!!.progressCircular.visibility = View.INVISIBLE
                 if (mBinding!!.communicationText != null) {
                     mBinding!!.communicationText!!.text = errorData.errorMessage
                 }
                 /*
-                     * Retry button click will initiate network call again
-                     * to get the province list
-                     * */mBinding!!.retryButton!!.setOnClickListener(View.OnClickListener { v: View? ->
-                mBinding!!.retryButton!!.visibility = View.INVISIBLE
-                subscribeForProvinceList()
-            } as View.OnClickListener)
+                 * Retry button click will initiate network call again
+                 * to get the province list
+                 * */
+                mBinding!!.retryButton!!.setOnClickListener { v: View? ->
+                    mBinding!!.retryButton!!.visibility = View.INVISIBLE
+                    subscribeForProvinceList()
+                }
             })
         }
     }
@@ -145,7 +151,7 @@ class ItemDetailsFragment : Fragment() {
     private fun subscribeForProvinceList() {
         mBinding!!.progressCircular.visibility = View.VISIBLE
         mBinding!!.communicationText!!.text = ""
-        mViewModel!!.getProvinceList(country!!.ID.toString()).observe(viewLifecycleOwner, Observer { provinceList: List<Province?>? ->
+        mViewModel!!.getProvinceList(country!!.ID.toString()).observe(viewLifecycleOwner, Observer { provinceList: List<Province> ->
             mBinding!!.progressCircular.visibility = View.INVISIBLE
             provinceAdapter!!.updateList(provinceList)
         })
@@ -162,16 +168,17 @@ class ItemDetailsFragment : Fragment() {
     /*
      * Set recyclerView using GridlayoutManager
      * */
-    fun setRecyclerView(orientation: Int) {
+    private fun setRecyclerView(orientation: Int) {
         mBinding!!.recyclerView.addItemDecoration(DividerItemDecoration(mBinding!!.recyclerView.context, DividerItemDecoration.VERTICAL))
         val gridLayoutManager: GridLayoutManager
         /*
-     * Use the orientation to set the GridlayoutManager span items count.
-     * */if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            provinceAdapter = ProvinceAdapter(provinceList as ArrayList<Province>, 2, requireActivity())
+        * Use the orientation to set the GridlayoutManager span items count.
+        * */
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            provinceAdapter = ProvinceAdapter(provinceList , 2, requireActivity())
             gridLayoutManager = GridLayoutManager(activity, 2)
         } else {
-            provinceAdapter = ProvinceAdapter(provinceList as ArrayList<Province>, 4, requireActivity())
+            provinceAdapter = ProvinceAdapter(provinceList, 4, requireActivity())
             gridLayoutManager = GridLayoutManager(activity, 4)
         }
         mBinding!!.recyclerView.layoutManager = gridLayoutManager

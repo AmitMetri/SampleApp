@@ -37,7 +37,7 @@ class ItemListFragment : Fragment() {
     private val TAG: String = "ItemListFragment";
     private var itemListViewModel: ItemListViewModel? = null
     private var countriesAdapter: CountriesAdapter? = null
-    private val countries: List<Country> = java.util.ArrayList()
+    private val countries: MutableList<Country> = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         /*
@@ -58,7 +58,6 @@ class ItemListFragment : Fragment() {
         val orientation: Int = this.resources.configuration.orientation
 
         setRecyclerView(orientation)
-
 
         /*
          * Search feature is available.
@@ -119,7 +118,9 @@ class ItemListFragment : Fragment() {
         mBinding!!.communicationText.text = ""
         itemListViewModel?.countryList?.observe(viewLifecycleOwner, Observer {
             mBinding!!.progressCircular.visibility = View.INVISIBLE
-            countriesAdapter!!.updateList(it)
+            if (it != null) {
+                countriesAdapter!!.updateList(it)
+            }
         })
     }
 
@@ -134,24 +135,22 @@ class ItemListFragment : Fragment() {
     /*
      * Set recyclerView using GridlayoutManager
      * */
-    fun setRecyclerView(orientation: Int) {
+    private fun setRecyclerView(orientation: Int) {
         mBinding!!.recyclerView.addItemDecoration(DividerItemDecoration(mBinding!!.recyclerView.context, DividerItemDecoration.VERTICAL))
         val gridLayoutManager: GridLayoutManager
-        /*
-         * Use the orientation to set the GridlayoutManager span items count.
-         * */
+
         /*
          * Use the orientation to set the GridlayoutManager span items count.
          * */
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            countriesAdapter = CountriesAdapter(countries as MutableList<Country>, 1, requireActivity(), object : CountrySelection {
+            countriesAdapter = CountriesAdapter(countries , 1, requireActivity(), object : CountrySelection {
                 override fun onCountrySelected(country: Country?, itemView: View?, position: Int) {
                     navigateToDetails(country!!, itemView!!, position)
                 }
             })
             gridLayoutManager = GridLayoutManager(activity, 1)
         } else {
-            countriesAdapter = CountriesAdapter(countries as MutableList<Country>, 2, requireActivity(), object : CountrySelection {
+            countriesAdapter = CountriesAdapter(countries , 2, requireActivity(), object : CountrySelection {
                 override fun onCountrySelected(country: Country?, itemView: View?, position: Int) {
                     navigateToDetails(country!!, itemView!!, position)
                 }

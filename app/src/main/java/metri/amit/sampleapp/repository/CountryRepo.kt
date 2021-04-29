@@ -63,7 +63,7 @@ class CountryRepo {
      * This makes the item available for updating the UI directly.
      * Observer is posting the item on main thread (AndroidSchedulers.mainThread())
      * */
-    fun getCountries(applicationContext: Context): LiveData<List<Country>?> {
+    fun getCountries(applicationContext: Context): LiveData<List<Country>> {
         if (countries.value == null) {
             if (isConnectedToNetwork(applicationContext)) {
                 ApiClient.getClient(applicationContext).create(CountryServices::class.java).getCountryList()
@@ -77,7 +77,9 @@ class CountryRepo {
                                                     applicationContext.getString(R.string.no_countries)))
                                 } else {
                                     for (country in countries) {
-                                        if (country?.ID == null || country.Name == null || country.Name!!.isEmpty()) {
+                                        if (country.ID == null
+                                                || country.Code.isNullOrEmpty()
+                                                || country.Name.isNullOrEmpty()) {
                                             errorDataForItemListFragment.postValue(
                                                     ErrorData("050",
                                                             applicationContext.getString(R.string.generic_error)))
@@ -93,7 +95,7 @@ class CountryRepo {
                             countries
                         }
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(object : Observer<List<Country?>> {
+                        .subscribe(object : Observer<List<Country>> {
 
                             override fun onError(e: Throwable) {
                                 Log.e(TAG, "Error: $e")
@@ -102,17 +104,14 @@ class CountryRepo {
                                                 applicationContext.getString(R.string.generic_error)))
                             }
 
-
                             override fun onComplete() {
-
                             }
 
                             override fun onSubscribe(d: Disposable) {
-
                             }
 
-                            override fun onNext(t: List<Country?>) {
-                                countries.postValue(t as List<Country>?)
+                            override fun onNext(t: List<Country>) {
+                                countries.postValue(t)
                             }
 
                         } )
@@ -145,7 +144,7 @@ class CountryRepo {
             ApiClient.getClient(applicationContext).create(CountryServices::class.java).getProvinceList(countryId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.computation())
-                    .map { provinceList: List<Province?> ->
+                    .map { provinceList: List<Province> ->
                         try {
                             if (provinceList.isEmpty()) {
                                 errorDataForItemDetailsFragment.postValue(
@@ -153,7 +152,8 @@ class CountryRepo {
                                                 applicationContext.getString(R.string.no_provinces)))
                             } else {
                                 for (province in provinceList) {
-                                    if (province!!.ID == null || province.Name == null || province.Name!!.isEmpty()) {
+                                    if (province.ID == null
+                                            || province.Name.isNullOrEmpty()) {
                                         errorDataForItemDetailsFragment.postValue(
                                                 ErrorData("050",
                                                         applicationContext.getString(R.string.generic_error)))
@@ -169,17 +169,15 @@ class CountryRepo {
                         provinceList
                     }
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : Observer<List<Province?>> {
+                    .subscribe(object : Observer<List<Province>> {
                         override fun onComplete() {
-
                         }
 
                         override fun onSubscribe(d: Disposable) {
-
                         }
 
-                        override fun onNext(t: List<Province?>) {
-                            provinceMutableLiveData.postValue(t as List<Province>?)
+                        override fun onNext(t: List<Province>) {
+                            provinceMutableLiveData.postValue(t)
                         }
 
                         override fun onError(e: Throwable) {
@@ -198,19 +196,21 @@ class CountryRepo {
     }
 
     companion object {
-        /*
-     * Singleton method to provide the instance of the repository
-     * */ @JvmStatic
-        @get:Synchronized
-        var instance: CountryRepo? = null
-            get() {
-                if (field == null) field = CountryRepo()
-                return field
-            }
-            private set
         private const val TAG = "CountryRepo"
 
+        /*
+        * Singleton method to provide the instance of the repository
+        * */
+        private var instance: CountryRepo? = null
+        @Synchronized
+        fun getInstance(): CountryRepo{
+            if(instance == null){
+                instance = CountryRepo()
+            }
+            return instance as CountryRepo
+        }
     }
+
 }
 
 

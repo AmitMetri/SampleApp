@@ -13,9 +13,9 @@ import metri.amit.sampleapp.repository.CountryRepo
  */
 class ItemDetailsViewModel(application: Application) : AndroidViewModel(application) {
     fun getProvinceList(countryId: String?): LiveData<List<Province>> {
-        return CountryRepo.instance!!.getProvinceList(countryId, getApplication<Application>().applicationContext)
+        return CountryRepo.getInstance().getProvinceList(countryId, getApplication<Application>().applicationContext)
     }
 
     val errorDataMutableLiveData: MutableLiveData<ErrorData>
-        get() = CountryRepo.instance!!.errorDataForItemDetailsFragment
+        get() = CountryRepo.getInstance().errorDataForItemDetailsFragment
 }
