@@ -28,7 +28,7 @@ public class CountryRepoTest {
     @Test
     public void testGetErrorDataForItemListFragment() {
         SingleMutableLiveData<ErrorData> errorDataSingleMutableLiveData
-                = CountryRepo.getInstance().getErrorDataForItemListFragment();
+                = CountryRepo.getInstance().errorDataForItemListFragment;
         assertThat(errorDataSingleMutableLiveData).isInstanceOf(SingleMutableLiveData.class);
     }
 
@@ -38,7 +38,7 @@ public class CountryRepoTest {
     @Test
     public void testGetErrorDataForItemDetailsFragment() {
         SingleMutableLiveData<ErrorData> errorDataForItemDetailsFragment
-                = CountryRepo.getInstance().getErrorDataForItemDetailsFragment();
+                = CountryRepo.getInstance().errorDataForItemDetailsFragment;
         assertThat(errorDataForItemDetailsFragment).isInstanceOf(SingleMutableLiveData.class);
     }
 
