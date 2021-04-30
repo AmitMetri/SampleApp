@@ -5,10 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
@@ -34,12 +32,11 @@ import metri.amit.sampleapp.viewmodel.ItemListViewModel
 class ItemListFragment : Fragment() {
 
     private var mBinding: ItemListFragmentBinding? = null
-    private val TAG: String = "ItemListFragment";
     private var itemListViewModel: ItemListViewModel? = null
     private var countriesAdapter: CountriesAdapter? = null
     private val countries: MutableList<Country> = mutableListOf()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         /*
          * View binding is enabled
          * Inflate the view here
@@ -84,7 +81,7 @@ class ItemListFragment : Fragment() {
          * any other exceptions.
          * */
         mBinding!!.retryButton.visibility = View.INVISIBLE
-        itemListViewModel!!.errorDataMutableLiveData.observe(viewLifecycleOwner, Observer { errorData: ErrorData ->
+        itemListViewModel!!.errorDataMutableLiveData.observe(viewLifecycleOwner, { errorData: ErrorData ->
             /*
              * Make retry button visible in case of error
              * and make progress invisible in case of error.
@@ -116,7 +113,7 @@ class ItemListFragment : Fragment() {
         mBinding!!.searchView.visibility = View.VISIBLE
         mBinding!!.progressCircular.visibility = View.VISIBLE
         mBinding!!.communicationText.text = ""
-        itemListViewModel?.countryList?.observe(viewLifecycleOwner, Observer {
+        itemListViewModel?.countryList?.observe(viewLifecycleOwner, {
             mBinding!!.progressCircular.visibility = View.INVISIBLE
             if (it != null) {
                 countriesAdapter!!.updateList(it)

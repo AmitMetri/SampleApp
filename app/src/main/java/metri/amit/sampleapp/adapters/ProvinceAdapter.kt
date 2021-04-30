@@ -2,15 +2,11 @@ package metri.amit.sampleapp.adapters
 
 import android.app.Activity
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import metri.amit.sampleapp.databinding.ItemProvinceBinding
 import metri.amit.sampleapp.model.Province
-import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Created by amitmetri on 28,April,2021

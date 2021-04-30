@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package metri.amit.sampleapp.model
 
 /**

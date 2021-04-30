@@ -1,7 +1,6 @@
 package metri.amit.sampleapp.repository
 
 import io.reactivex.Observable
-import io.reactivex.Single
 import metri.amit.sampleapp.model.Country
 import metri.amit.sampleapp.model.Province
 import retrofit2.http.GET

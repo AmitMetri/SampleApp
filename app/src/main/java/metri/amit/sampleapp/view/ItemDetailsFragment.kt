@@ -1,13 +1,14 @@
 package metri.amit.sampleapp.view
 
+import android.app.Activity
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
@@ -25,7 +26,6 @@ import metri.amit.sampleapp.model.ErrorData
 import metri.amit.sampleapp.model.Province
 import metri.amit.sampleapp.viewmodel.ItemDetailsViewModel
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Created by amitmetri on 28,April,2021
@@ -55,7 +55,7 @@ class ItemDetailsFragment : Fragment() {
         position = requireArguments().getInt("position", 0)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         /*
          * View binding is enabled
          * Inflate the view here
@@ -66,6 +66,8 @@ class ItemDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        hideKeyboard(mBinding!!.countryFlag)
 
         /* ViewModel initialization with fragment lifecycle scope */
         mViewModel = ViewModelProvider(this).get(ItemDetailsViewModel::class.java)
@@ -121,7 +123,7 @@ class ItemDetailsFragment : Fragment() {
             if (mBinding!!.retryButton != null) {
                 mBinding!!.retryButton!!.visibility = View.INVISIBLE
             }
-            mViewModel!!.errorDataMutableLiveData.observe(viewLifecycleOwner, Observer { errorData: ErrorData ->
+            mViewModel!!.errorDataMutableLiveData.observe(viewLifecycleOwner, { errorData: ErrorData ->
                 /*
                  * Make retry button visible in case of error
                  * and make progress invisible in case of error.
@@ -151,7 +153,7 @@ class ItemDetailsFragment : Fragment() {
     private fun subscribeForProvinceList() {
         mBinding!!.progressCircular.visibility = View.VISIBLE
         mBinding!!.communicationText!!.text = ""
-        mViewModel!!.getProvinceList(country!!.ID.toString()).observe(viewLifecycleOwner, Observer { provinceList: List<Province> ->
+        mViewModel!!.getProvinceList(country!!.ID.toString()).observe(viewLifecycleOwner, { provinceList: List<Province> ->
             mBinding!!.progressCircular.visibility = View.INVISIBLE
             provinceAdapter!!.updateList(provinceList)
         })
@@ -183,6 +185,11 @@ class ItemDetailsFragment : Fragment() {
         }
         mBinding!!.recyclerView.layoutManager = gridLayoutManager
         mBinding!!.recyclerView.adapter = provinceAdapter
+    }
+
+    private fun hideKeyboard(view: View) {
+        val inputMethodManager = requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onDestroyView() {

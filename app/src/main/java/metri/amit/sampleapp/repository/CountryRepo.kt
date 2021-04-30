@@ -43,7 +43,7 @@ class CountryRepo {
     /*
      * Helper method to check the connectivity
      * */
-    fun isConnectedToNetwork(context: Context): Boolean {
+    private fun isConnectedToNetwork(context: Context): Boolean {
         val conMgr = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         try {
             val netInfo = conMgr.activeNetworkInfo
