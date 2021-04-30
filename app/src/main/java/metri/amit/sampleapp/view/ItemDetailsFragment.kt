@@ -24,6 +24,7 @@ import metri.amit.sampleapp.databinding.FragmentItemDetailsBinding
 import metri.amit.sampleapp.model.Country
 import metri.amit.sampleapp.model.ErrorData
 import metri.amit.sampleapp.model.Province
+import metri.amit.sampleapp.repository.CountryRepo
 import metri.amit.sampleapp.viewmodel.ItemDetailsViewModel
 import java.util.*
 
@@ -120,25 +121,21 @@ class ItemDetailsFragment : Fragment() {
              * network failures, timeouts, data validation failures or
              * any other exceptions.
              * */
-            if (mBinding!!.retryButton != null) {
-                mBinding!!.retryButton!!.visibility = View.INVISIBLE
-            }
+            mBinding!!.retryButton.visibility = View.INVISIBLE
             mViewModel!!.errorDataMutableLiveData.observe(viewLifecycleOwner, { errorData: ErrorData ->
                 /*
                  * Make retry button visible in case of error
                  * and make progress invisible in case of error.
                  * */
-                mBinding!!.retryButton!!.visibility = View.VISIBLE
+                mBinding!!.retryButton.visibility = View.VISIBLE
                 mBinding!!.progressCircular.visibility = View.INVISIBLE
-                if (mBinding!!.communicationText != null) {
-                    mBinding!!.communicationText!!.text = errorData.errorMessage
-                }
+                mBinding!!.communicationText.text = errorData.errorMessage
                 /*
                  * Retry button click will initiate network call again
                  * to get the province list
                  * */
-                mBinding!!.retryButton!!.setOnClickListener { v: View? ->
-                    mBinding!!.retryButton!!.visibility = View.INVISIBLE
+                mBinding!!.retryButton.setOnClickListener { v: View? ->
+                    mBinding!!.retryButton.visibility = View.INVISIBLE
                     subscribeForProvinceList()
                 }
             })
@@ -152,7 +149,7 @@ class ItemDetailsFragment : Fragment() {
      * */
     private fun subscribeForProvinceList() {
         mBinding!!.progressCircular.visibility = View.VISIBLE
-        mBinding!!.communicationText!!.text = ""
+        mBinding!!.communicationText.text = ""
         mViewModel!!.getProvinceList(country!!.ID.toString()).observe(viewLifecycleOwner, { provinceList: List<Province> ->
             mBinding!!.progressCircular.visibility = View.INVISIBLE
             provinceAdapter!!.updateList(provinceList)

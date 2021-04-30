@@ -21,11 +21,12 @@ import metri.amit.sampleapp.model.Province
  * Single repository for the data source.
  */
 class CountryRepo {
+
     /*
-     * Country list mutable live data
-     * is being observed by the ItemListFragment
-     * to show the list of countries
-     * */
+         * Country list mutable live data
+         * is being observed by the ItemListFragment
+         * to show the list of countries
+         * */
     val countries = MutableLiveData<List<Country>>()
 
     /*
@@ -43,7 +44,7 @@ class CountryRepo {
     /*
      * Helper method to check the connectivity
      * */
-    private fun isConnectedToNetwork(context: Context): Boolean {
+    fun isConnectedToNetwork(context: Context): Boolean {
         val conMgr = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         try {
             val netInfo = conMgr.activeNetworkInfo
