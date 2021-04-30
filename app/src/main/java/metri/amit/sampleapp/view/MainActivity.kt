@@ -31,13 +31,4 @@ class MainActivity : AppCompatActivity() {
             NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration)
         }
     }
-
-    //This will retain the Activity when Back Pressed.
-    override fun onBackPressed() {
-        //super.onBackPressed()
-        val setIntent = Intent(Intent.ACTION_MAIN)
-        setIntent.addCategory(Intent.CATEGORY_HOME)
-        setIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(setIntent)
-    }
 }
